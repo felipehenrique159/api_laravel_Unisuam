@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Indicacoes;
+use App\Models\StatusIndicacao;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class IndicacoesController extends Controller
 {
@@ -13,7 +16,7 @@ class IndicacoesController extends Controller
      */
     public function index()
     {
-        //
+        return Indicacoes::all();
     }
 
     /**
@@ -33,8 +36,9 @@ class IndicacoesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+    //   dd($request);
+      return $request;
     }
 
     /**
@@ -81,4 +85,5 @@ class IndicacoesController extends Controller
     {
         //
     }
+
 }

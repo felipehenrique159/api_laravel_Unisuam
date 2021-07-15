@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\IndicacoesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::get('/', function () {
+    return response()->json([
+        'API' => 'Api Working...',
+        'version' => 'API Version 1.0'
+    ]);
 });
+
+Route::resource('indicacoes', IndicacoesController::class);
