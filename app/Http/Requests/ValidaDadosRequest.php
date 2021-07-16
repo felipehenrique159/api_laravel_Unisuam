@@ -39,7 +39,9 @@ class ValidaDadosRequest extends FormRequest
             'email.email' => 'Email informado não é válido!',
             'nome.required' => 'Nome é obrigatório!',
             'cpf.required' => 'Cpf é obrigatório!',
-            'cpf.unique' => "Cpf já cadastrado"
+            'cpf.unique' => "Cpf já cadastrado",
+            'cpf.cpf' => "Cpf informado não é válido!",
+
         ];
     }
 
@@ -47,10 +49,9 @@ class ValidaDadosRequest extends FormRequest
     {
         $response = new JsonResponse([
             'result' => 'Error',
-            'data' => [
-                'message' => 'Dados Inválidos',
-                'errors' => $validator->errors()
-            ]
+            'message' => 'Dados Inválidos',
+            'errors' => $validator->errors()
+            
         ], 422);
 
         throw new \Illuminate\Validation\ValidationException($validator, $response);
