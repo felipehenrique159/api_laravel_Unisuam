@@ -17,8 +17,14 @@ class Indicacoes extends Model
         'nome',
         'cpf',
         'email',
-        'telefone'
+        'telefone',
+        'status_id'
     ];
+
+    public function getStatus()
+    {
+        return $this->hasOne(StatusIndicacao::class,'id','status_id');
+    }
 
     
 

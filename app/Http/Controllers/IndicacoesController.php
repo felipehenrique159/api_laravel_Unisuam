@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidaDadosRequest;
+use App\Models\Enum\StatusIndicacaoEnum;
 use App\Models\Indicacoes;
 use App\Models\StatusIndicacao;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
 
 class IndicacoesController extends Controller
 {
@@ -35,10 +38,34 @@ class IndicacoesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {   
-    //   dd($request);
-      return $request;
+    public function store(ValidaDadosRequest $request)
+    {
+
+        try {
+            Indicacoes::insert([
+                'nome' => $request->nome,
+                'cpf' => $request->cpf,
+                'telefone' => $request->telefone,
+                'email' => $request->email,
+                'status_id' => StatusIndicacaoEnum::INICIADA
+            ]);
+
+            $sucesso = [
+                'result' => 'success',
+                "method" => "store",
+                'message' => 'Dados gravados com sucesso',
+            ];
+
+            return $sucesso;
+        } catch (\Throwable $th) {
+            $error = [
+                'result' => 'error',
+                "method" => "store",
+                'message' => 'Erro ao inserir',
+                'messageError' => $th->getMessage(),
+            ];
+            return $error;
+        }
     }
 
     /**
@@ -85,5 +112,4 @@ class IndicacoesController extends Controller
     {
         //
     }
-
 }
