@@ -18,8 +18,8 @@ class IndicacoesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return Indicacoes::all();
+    {   
+        return Indicacoes::with('getStatus')->get();
     }
 
     /**
@@ -99,7 +99,24 @@ class IndicacoesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       try {
+            Indicacoes::where('id',$id)->update([
+                'status_id' => StatusIndicacaoEnum::EM_PROCESSO
+            ]);
+
+            $sucesso = [
+                'result' => 'success',
+                "method" => "update",
+                'message' => 'Status atualizado com sucesso',
+            ];
+
+            return $sucesso;
+
+       } catch (\Throwable $th) {
+           //throw $th;
+       }
+
+
     }
 
     /**
