@@ -18,8 +18,8 @@ class IndicacoesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
-        return Indicacoes::with('getStatus')->get();
+    {
+        return Indicacoes::with('getStatus')->orderBy('nome')->get();
     }
 
     /**
@@ -99,24 +99,39 @@ class IndicacoesController extends Controller
      */
     public function update(Request $request, $id)
     {
-       try {
-            Indicacoes::where('id',$id)->update([
-                'status_id' => StatusIndicacaoEnum::EM_PROCESSO
-            ]);
 
-            $sucesso = [
-                'result' => 'success',
+        try {
+            $indicacao = Indicacoes::where('id', $id)->first();
+            if ($indicacao->status_id == 1) {
+                $indicacao->status_id =  StatusIndicacaoEnum::EM_PROCESSO;
+                $indicacao->save();
+
+                $sucesso = [
+                    'result' => 'success',
+                    "method" => "update",
+                    'message' => 'Status atualizado com sucesso',
+                ];
+                return $sucesso;
+            }
+            if ($indicacao->status_id == 2) {
+                $indicacao->status_id = StatusIndicacaoEnum::FINALIZADA;
+                $indicacao->save();
+
+                $sucesso = [
+                    'result' => 'success',
+                    "method" => "update",
+                    'message' => 'Status atualizado com sucesso',
+                ];
+                return $sucesso;
+            }
+        } catch (\Throwable $th) {
+            $erro = [
+                'result' => 'error',
                 "method" => "update",
-                'message' => 'Status atualizado com sucesso',
+                'message' => $th->getMessage(),
             ];
-
-            return $sucesso;
-
-       } catch (\Throwable $th) {
-           //throw $th;
-       }
-
-
+            return $erro;
+        }
     }
 
     /**
@@ -127,6 +142,32 @@ class IndicacoesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+
+            $indicacao = Indicacoes::where('id', $id)->first();
+            if ($indicacao->status_id == 3) {
+                $indicacao->delete();
+                $sucesso = [
+                    'result' => 'success',
+                    "method" => "destroy",
+                    'message' => 'Indicação excluida com sucesso',
+                ];
+                return $sucesso;
+            } else {
+                $erro = [
+                    'result' => 'error',
+                    "method" => "destroy",
+                    'message' => 'Indicação precisar estar com status finalizada para excluir',
+                ];
+                return $erro;
+            }
+        } catch (\Throwable $th) {
+            $erro = [
+                'result' => 'error',
+                "method" => "destroy",
+                'message' => $th->getMessage(),
+            ];
+            return $erro;
+        }
     }
 }

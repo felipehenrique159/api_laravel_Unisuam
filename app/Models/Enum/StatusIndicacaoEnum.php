@@ -6,5 +6,5 @@ class StatusIndicacaoEnum
 {
     const INICIADA = 1;
     const EM_PROCESSO = 2;
-    const ENCERRADA = 3;
+    const FINALIZADA = 3;
 }
