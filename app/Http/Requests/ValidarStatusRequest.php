@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 
-class ValidaDadosRequest extends FormRequest
+class ValidarStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,25 +25,14 @@ class ValidaDadosRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email:rfc,dns',
-            'nome' => 'required|string|max:45',
-            'telefone' => 'required|string|max:45',
-            'cpf' => 'required|cpf|unique:App\Models\Indicacoes,cpf',
+            'status_id' => 'required'
         ];
     }
-
 
     public function messages()
     {
         return [
-            'email.required' => 'Email é obrigatório!',
-            'email.email' => 'Email informado não é válido!',
-            'nome.required' => 'Nome é obrigatório!',
-            'nome.max' => 'Nome deve ter no maximo 45 caracteres!',
-            'telefone.max' => 'Telefone deve ter no maximo 45 caracteres!',
-            'cpf.required' => 'Cpf é obrigatório!',
-            'cpf.unique' => "Cpf já cadastrado",
-            'cpf.cpf' => "Cpf informado não é válido!",
+            'status_id.required' => 'id do status é obrigatório!',
         ];
     }
 
@@ -58,5 +47,4 @@ class ValidaDadosRequest extends FormRequest
 
         throw new \Illuminate\Validation\ValidationException($validator, $response);
     }
-
 }

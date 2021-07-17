@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ValidaDadosRequest;
+use App\Http\Requests\ValidarStatusRequest;
 use App\Models\Enum\StatusIndicacaoEnum;
 use App\Models\Indicacoes;
 use App\Models\StatusIndicacao;
@@ -97,32 +98,35 @@ class IndicacoesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidarStatusRequest $request, $id)
     {
-
         try {
             $indicacao = Indicacoes::where('id', $id)->first();
-            if ($indicacao->status_id == 1) {
-                $indicacao->status_id =  StatusIndicacaoEnum::EM_PROCESSO;
-                $indicacao->save();
-
-                $sucesso = [
-                    'result' => 'success',
+            if ($indicacao) {
+                if ($indicacao->status_id < $request->status_id) {
+                    $indicacao->status_id = $request->status_id;
+                    $indicacao->save();
+                    $sucesso = [
+                        'result' => 'success',
+                        "method" => "update",
+                        'message' => 'Status atualizado com sucesso',
+                    ];
+                    return $sucesso;
+                } else {
+                    $erro = [
+                        'result' => 'error',
+                        "method" => "update",
+                        'message' => 'Não pode atualizar para status anterior ao atual',
+                    ];
+                    return $erro;
+                }
+            } else {
+                $erro = [
+                    'result' => 'error',
                     "method" => "update",
-                    'message' => 'Status atualizado com sucesso',
+                    'message' => "Id de indicação inválida",
                 ];
-                return $sucesso;
-            }
-            if ($indicacao->status_id == 2) {
-                $indicacao->status_id = StatusIndicacaoEnum::FINALIZADA;
-                $indicacao->save();
-
-                $sucesso = [
-                    'result' => 'success',
-                    "method" => "update",
-                    'message' => 'Status atualizado com sucesso',
-                ];
-                return $sucesso;
+                return $erro;
             }
         } catch (\Throwable $th) {
             $erro = [
@@ -143,7 +147,6 @@ class IndicacoesController extends Controller
     public function destroy($id)
     {
         try {
-
             $indicacao = Indicacoes::where('id', $id)->first();
             if ($indicacao->status_id == 3) {
                 $indicacao->delete();
