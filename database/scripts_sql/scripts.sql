@@ -1,12 +1,5 @@
 create database sistema_indicacoes;
 
-CREATE TABLE public.status_indicacao
-(
-    id integer NOT NULL DEFAULT nextval('status_indicacao_autoincrement'::regclass),
-    descricao character varying(45) COLLATE pg_catalog."default",
-    CONSTRAINT status_indicacao_pkey PRIMARY KEY (id)
-)
-
 CREATE SEQUENCE public.status_indicacao_autoincrement
     INCREMENT 1
     START 1
@@ -14,12 +7,23 @@ CREATE SEQUENCE public.status_indicacao_autoincrement
     MAXVALUE 9223372036854775807
     CACHE 1;
 
-ALTER TABLE status_indicacao ALTER COLUMN id SET DEFAULT NEXTVAL('status_indicacao_autoincrement'::regclass);
-
+CREATE TABLE public.status_indicacao
+(
+    id integer NOT NULL DEFAULT nextval('status_indicacao_autoincrement'::regclass),
+    descricao character varying(45) COLLATE pg_catalog."default",
+    CONSTRAINT status_indicacao_pkey PRIMARY KEY (id)
+);
 
 INSERT INTO status_indicacao (descricao) VALUES ('Iniciada');
 INSERT INTO status_indicacao (descricao) VALUES ('Em processo');
 INSERT INTO status_indicacao (descricao) VALUES ('Finalizada');
+
+CREATE SEQUENCE public.indicacoes_autoincrement
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
 
 CREATE TABLE public.indicacoes
 (
@@ -35,16 +39,3 @@ CREATE TABLE public.indicacoes
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
-	
-
-CREATE SEQUENCE public.indicacoes_autoincrement
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER TABLE indicacoes ALTER COLUMN id SET DEFAULT NEXTVAL('indicacoes_autoincrement'::regclass);
-
-
-
