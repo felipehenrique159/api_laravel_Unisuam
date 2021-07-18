@@ -28,7 +28,7 @@ class ValidaDadosRequest extends FormRequest
             'email' => 'required|email:rfc,dns',
             'nome' => 'required|string|max:45',
             'telefone' => 'required|string|max:45',
-            'cpf' => 'required|cpf|unique:App\Models\Indicacoes,cpf',
+            'cpf' => 'required|cpf|unique:App\Models\Indicacoes,cpf|max:11',
         ];
     }
 
@@ -44,6 +44,7 @@ class ValidaDadosRequest extends FormRequest
             'cpf.required' => 'Cpf é obrigatório!',
             'cpf.unique' => "Cpf já cadastrado",
             'cpf.cpf' => "Cpf informado não é válido!",
+            'cpf.max' => "Cpf não deve conter caracteres especiais!"
         ];
     }
 
