@@ -25,7 +25,7 @@ class ValidaDadosRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email:rfc,dns',
+            'email' => 'required|email:rfc,dns|max:45',
             'nome' => 'required|string|max:45',
             'telefone' => 'required|string|max:45',
             'cpf' => 'required|cpf|unique:App\Models\Indicacoes,cpf|max:11',
@@ -36,15 +36,16 @@ class ValidaDadosRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'Email é obrigatório!',
-            'email.email' => 'Email informado não é válido!',
+            'email.required' => 'E-mail é obrigatório!',
+            'email.email' => 'E-mail informado não é válido!',
             'nome.required' => 'Nome é obrigatório!',
             'nome.max' => 'Nome deve ter no maximo 45 caracteres!',
             'telefone.max' => 'Telefone deve ter no maximo 45 caracteres!',
+            'email.max' => 'E-mail deve ter no maximo 45 caracteres!',
             'cpf.required' => 'Cpf é obrigatório!',
             'cpf.unique' => "Cpf já cadastrado",
             'cpf.cpf' => "Cpf informado não é válido!",
-            'cpf.max' => "Cpf não deve conter caracteres especiais!"
+            'cpf.max' => "Cpf não deve conter caracteres especiais!, deve conter apenas 11 dígitos"
         ];
     }
 
