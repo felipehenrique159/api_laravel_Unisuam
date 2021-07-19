@@ -148,7 +148,7 @@ class IndicacoesController extends Controller
     {
         try {
             $indicacao = Indicacoes::where('id', $id)->first();
-            if ($indicacao->status_id == 3) {
+            if ($indicacao->status_id == StatusIndicacaoEnum::FINALIZADA) {
                 $indicacao->delete();
                 $sucesso = [
                     'result' => 'success',
